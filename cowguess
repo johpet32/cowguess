@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+#
+# cowguess 0.1 <https:www.github.com/johpet32/cowguess>
+# Guess which number the cow is thinking of!
+#
+# Copyright (C) 2020 johpet32
+# License: GNU Public License 3 or later
+#
+# Recommended: cowsay, lolcat
+# Linted with: shellcheck 0.7.1
+
+echow() {
+	case "$cowtype" in
+		"cl") cowsay "$@" | lolcat;;
+		 "c") cowsay "$@";;
+		   *) printf "%s\n" "${!#}";;
+	esac
+}
+
+### Main ###
+trap 'printf "\n"' EXIT
+
+unset cowtype
+((max = 100)); readonly max
+((secret = RANDOM % max + 1))
+((tries = 1))
+
+{
+command -v cowsay && cowtype="c"
+command -v lolcat && cowtype+="l"
+} &>/dev/null
+
+echow -e "??" "Which number between 1 and $max am I thinking of?"
+printf "\nType q to quit, or press Ctrl+C\n"
+
+while :; do
+	read -p "Guess: " -r g
+
+	if [[ -z "$g" ]]; then
+		continue
+	elif [[ "${g,,}" = "q" ]]; then
+		echow -d "See you later!"
+		break
+	elif ! [[ $g =~ ^[0-9]?[0-9]+$ ]] || ! ((g = 10#$g)) || ((g < 1 || g > max)); then
+		echow -e oO -T " U" "Well, that was a stupid guess! You lose!"
+		break
+	elif ((secret < g)); then
+		printf "The number I'm thinking of is less than %s\n" "$g"
+	elif ((secret > g)); then
+		printf "The number I'm thinking of is greater than %s\n" "$g"
+	else
+		echow "Congratulations! You got it right in $tries tries!"
+		break
+	fi
+
+	((tries++))
+done
