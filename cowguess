@@ -22,7 +22,7 @@ trap 'printf "\n"' EXIT
 
 unset cowtype
 ((max = 100)); readonly max
-((secret = RANDOM % max + 1))
+((secret = RANDOM % max + 1)); readonly secret
 ((tries = 1))
 
 {
