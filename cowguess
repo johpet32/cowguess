@@ -3,8 +3,9 @@
 # cowguess 0.1 <https:www.github.com/johpet32/cowguess>
 # Guess which number the cow is thinking of!
 #
-# Copyright (C) 2020 johpet32
-# License: GNU Public License 3 or later
+# Copyright (C) 2020-2021 johpet32
+# License: GNU Public License 3 or later,
+#          see LICENSE in the project root
 #
 # Recommended: cowsay, lolcat
 # Linted with: shellcheck 0.7.1
